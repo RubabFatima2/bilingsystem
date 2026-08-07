@@ -4,7 +4,9 @@ from datetime import datetime
 from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Enum
 
+from app.constants.subscription_status import SubscriptionStatus
 from app.db.base import Base
 
 
@@ -29,10 +31,11 @@ class Subscription(Base):
         nullable=False,
     )
 
-    status: Mapped[str] = mapped_column(
-        String(50),
-        default="active",
-    )
+    status: Mapped[SubscriptionStatus] = mapped_column(
+    Enum(SubscriptionStatus),
+    default=SubscriptionStatus.ACTIVE,
+    nullable=False,
+)
 
     started_at: Mapped[datetime] = mapped_column(
         DateTime,
