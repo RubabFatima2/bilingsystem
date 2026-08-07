@@ -23,3 +23,12 @@ class SubscriptionRepository:
 
     def get_all(self):
         return self.db.query(Subscription).all()
+
+    def get_by_id(self, subscription_id):
+        return (
+            self.db.query(Subscription)
+            .filter(
+                Subscription.id == subscription_id
+            )
+            .first()
+    )

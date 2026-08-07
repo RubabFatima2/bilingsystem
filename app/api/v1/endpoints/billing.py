@@ -1,0 +1,27 @@
+from uuid import UUID
+
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from app.db.session import get_db
+from app.schemas.billing import BillingResponse
+from app.services.billing_service import BillingService
+
+router = APIRouter(
+    prefix="/billing",
+    tags=["Billing"],
+)
+
+
+@router.get(
+    "/{subscription_id}",
+    response_model=BillingResponse,
+)
+def calculate_bill(
+    subscription_id: UUID,
+    db: Session = Depends(get_db),
+):
+    service = BillingService(db)
+    return service.calculate_bill(
+        subscription_id
+    )

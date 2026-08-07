@@ -48,3 +48,8 @@ class Subscription(Base):
         "Plan",
         back_populates="subscriptions",
     )
+    usage_events = relationship(
+    "UsageEvent",
+    back_populates="subscription",
+    cascade="all, delete-orphan",
+)
