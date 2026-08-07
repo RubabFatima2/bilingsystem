@@ -1,5 +1,7 @@
 from fastapi import HTTPException
-
+from sqlalchemy.orm import Session
+from app.repositories.tenant_repository import TenantRepository
+from app.schemas.tenant import TenantCreate
 
 class TenantService:
 
