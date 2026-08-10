@@ -5,6 +5,12 @@ from sqlalchemy import engine_from_config, pool
 from alembic import context
 
 from app.db.base import Base
+# from app.db import models
+# Import models after Base has been created.
+from app.models.tenant import Tenant
+from app.models.plan import Plan
+from app.models.subscription import Subscription
+from app.models.usage_event import UsageEvent
 from app.core.config import settings
 
 
