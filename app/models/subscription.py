@@ -56,3 +56,8 @@ class Subscription(Base):
     back_populates="subscription",
     cascade="all, delete-orphan",
 )
+    invoices = relationship(
+    "Invoice",
+    back_populates="subscription",
+    cascade="all, delete-orphan",
+)

@@ -6,6 +6,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class UsageCreate(BaseModel):
     subscription_id: UUID
     quantity: int = Field(gt=0)
+    idempotency_key: str
 
 
 class UsageResponse(BaseModel):

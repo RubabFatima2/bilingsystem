@@ -1,15 +1,15 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String
+from sqlalchemy import DateTime, ForeignKey, Integer
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 
 
-class UsageEvent(Base):
-    __tablename__ = "usage_events"
+class Invoice(Base):
+    __tablename__ = "invoices"
 
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
@@ -23,23 +23,35 @@ class UsageEvent(Base):
         nullable=False,
     )
 
-    quantity: Mapped[int] = mapped_column(
+    plan_price: Mapped[int] = mapped_column(
         Integer,
         nullable=False,
     )
-    
-    idempotency_key: Mapped[str] = mapped_column(
-    String,
-    unique=True,
-    nullable=False,
+
+    usage_limit: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    total_usage: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    overage: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
+    amount_due: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
     )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow,
+        nullable=False,
     )
 
-    subscription = relationship(
-        "Subscription",
-        back_populates="usage_events",
-    )
+    subscription = relationship("Subscription")
