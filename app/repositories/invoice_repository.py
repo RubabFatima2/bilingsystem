@@ -14,3 +14,5 @@ class InvoiceRepository:
         self.db.refresh(invoice)
 
         return invoice
+    def get_all(self):
+        return self.db.query(Invoice).all()
