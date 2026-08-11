@@ -1,6 +1,8 @@
 from app.repositories.subscription_repository import (
     SubscriptionRepository,
+    
 )
+from app.repositories.plan_repository import PlanRepository
 from app.repositories.usage_repository import UsageRepository
 from app.repositories.invoice_repository import InvoiceRepository
 from app.models.invoice import Invoice
@@ -14,42 +16,56 @@ class BillingService:
         self.usage_repo = UsageRepository(db)
         self.invoice_repo = InvoiceRepository(db)
     def calculate_bill(self, subscription_id):
-
         subscription = self.subscription_repo.get_by_id(
-            subscription_id
-        )
+        subscription_id
+    )
 
         plan = subscription.plan
 
         total_usage = self.usage_repo.get_total_usage(
-            subscription_id
-        )
+        subscription_id
+    )
 
         overage = max(
-            total_usage - plan.usage_limit,
-            0,
-        )
+        total_usage - plan.usage_limit,
+        0,
+    )
 
         amount_due = (
-            plan.price +
-            overage * self.OVERAGE_PRICE
-        )
+        plan.price +
+        overage * self.OVERAGE_PRICE
+    )
+
+        existing_invoice = self.invoice_repo.get_by_subscription_id(
+        subscription_id
+    )
+
+        if existing_invoice:
+           return {
+            "subscription_id": existing_invoice.subscription_id,
+            "plan_price": existing_invoice.plan_price,
+            "usage_limit": existing_invoice.usage_limit,
+            "total_usage": existing_invoice.total_usage,
+            "overage": existing_invoice.overage,
+            "amount_due": existing_invoice.amount_due,
+        }
+
         invoice = Invoice(
-    subscription_id=subscription.id,
-    plan_price=plan.price,
-    usage_limit=plan.usage_limit,
-    total_usage=total_usage,
-    overage=overage,
-    amount_due=amount_due,
+        subscription_id=subscription.id,
+        plan_price=plan.price,
+        usage_limit=plan.usage_limit,
+        total_usage=total_usage,
+        overage=overage,
+        amount_due=amount_due,
     )
 
         self.invoice_repo.create(invoice)
 
         return {
-            "subscription_id": subscription.id,
-            "plan_price": plan.price,
-            "usage_limit": plan.usage_limit,
-            "total_usage": total_usage,
-            "overage": overage,
-            "amount_due": amount_due,
-        }
+        "subscription_id": subscription.id,
+        "plan_price": plan.price,
+        "usage_limit": plan.usage_limit,
+        "total_usage": total_usage,
+        "overage": overage,
+        "amount_due": amount_due,
+    }
