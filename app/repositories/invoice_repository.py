@@ -16,3 +16,12 @@ class InvoiceRepository:
         return invoice
     def get_all(self):
         return self.db.query(Invoice).all()
+
+
+    def get_by_subscription_id(self, subscription_id):
+      return (
+        self.db.query(Invoice)
+        .filter(Invoice.subscription_id == subscription_id)
+        .order_by(Invoice.created_at.desc())
+        .first()
+    )
