@@ -13,6 +13,7 @@ from app.models.subscription import Subscription
 from app.models.usage_event import UsageEvent
 from app.core.config import settings
 from app.models.invoice import Invoice
+from app.models.webhook_event import WebhookEvent
 
 config = context.config
 
