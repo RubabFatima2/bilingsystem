@@ -4,7 +4,6 @@ from app.repositories.subscription_repository import (
 
 
 class SubscriptionService:
-
     def __init__(self, db):
         self.repository = SubscriptionRepository(db)
 

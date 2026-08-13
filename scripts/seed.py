@@ -5,16 +5,17 @@ the demo -- the tenant id doubles as the ``X-Tenant-Id`` header value.
 
 Run from the repo root:  uv run python scripts/seed.py
 """
+
 import sys
 from pathlib import Path
 
 # Allow running as `python scripts/seed.py` from anywhere in the repo.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from app.constants.subscription_status import SubscriptionStatus  # noqa: E402
-from app.core.logging import logger  # noqa: E402
-from app.db.session import SessionLocal  # noqa: E402
-from app.models import Plan, Subscription, Tenant  # noqa: E402
+from app.constants.subscription_status import SubscriptionStatus
+from app.core.logging import logger
+from app.db.session import SessionLocal
+from app.models import Plan, Subscription, Tenant
 
 # Money is integer cents. Monthly limits follow the capstone brief:
 # Free 1,000 calls / 100k tokens, Pro higher.
@@ -51,11 +52,7 @@ def main() -> None:
                 logger.info("Plan %s already exists", spec["name"])
             plans[spec["name"]] = plan
 
-        tenant = (
-            db.query(Tenant)
-            .filter(Tenant.email == "demo@example.com")
-            .first()
-        )
+        tenant = db.query(Tenant).filter(Tenant.email == "demo@example.com").first()
         if tenant is None:
             tenant = Tenant(name="Demo Tenant", email="demo@example.com")
             db.add(tenant)
@@ -63,9 +60,7 @@ def main() -> None:
             logger.info("Created demo tenant")
 
         subscription = (
-            db.query(Subscription)
-            .filter(Subscription.tenant_id == tenant.id)
-            .first()
+            db.query(Subscription).filter(Subscription.tenant_id == tenant.id).first()
         )
         if subscription is None:
             subscription = Subscription(

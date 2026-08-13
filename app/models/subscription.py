@@ -1,10 +1,9 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, String
+from sqlalchemy import DateTime, Enum, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Enum
 
 from app.constants.subscription_status import SubscriptionStatus
 from app.db.base import Base
@@ -32,10 +31,23 @@ class Subscription(Base):
     )
 
     status: Mapped[SubscriptionStatus] = mapped_column(
-    Enum(SubscriptionStatus),
-    default=SubscriptionStatus.ACTIVE,
-    nullable=False,
-)
+        Enum(SubscriptionStatus),
+        default=SubscriptionStatus.ACTIVE,
+        nullable=False,
+    )
+
+    # Stripe test-mode identifiers kept so verified webhooks and the nightly
+    # reconciliation job can map Stripe objects back to this subscription.
+    stripe_customer_id: Mapped[str | None] = mapped_column(
+        String,
+        nullable=True,
+    )
+
+    stripe_subscription_id: Mapped[str | None] = mapped_column(
+        String,
+        unique=True,
+        nullable=True,
+    )
 
     started_at: Mapped[datetime] = mapped_column(
         DateTime,
@@ -52,12 +64,12 @@ class Subscription(Base):
         back_populates="subscriptions",
     )
     usage_events = relationship(
-    "UsageEvent",
-    back_populates="subscription",
-    cascade="all, delete-orphan",
-)
+        "UsageEvent",
+        back_populates="subscription",
+        cascade="all, delete-orphan",
+    )
     invoices = relationship(
-    "Invoice",
-    back_populates="subscription",
-    cascade="all, delete-orphan",
-)
+        "Invoice",
+        back_populates="subscription",
+        cascade="all, delete-orphan",
+    )

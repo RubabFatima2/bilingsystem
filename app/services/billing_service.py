@@ -4,6 +4,7 @@ One invoice per subscription per billing period; the period defaults to the
 current calendar month. Money is integer cents throughout (the brief's rule:
 store money as integers, never floats).
 """
+
 from datetime import datetime
 
 from app.core.exceptions import ResourceNotFoundException
@@ -15,7 +16,6 @@ from app.utils.dates import month_bounds
 
 
 class BillingService:
-
     # Cents charged per unit of usage over the plan's usage_limit.
     OVERAGE_PRICE = 10
 
@@ -32,9 +32,7 @@ class BillingService:
     ):
         subscription = self.subscription_repo.get_by_id(subscription_id)
         if subscription is None:
-            raise ResourceNotFoundException(
-                f"Subscription {subscription_id} not found"
-            )
+            raise ResourceNotFoundException(f"Subscription {subscription_id} not found")
 
         plan = subscription.plan
 
@@ -42,9 +40,7 @@ class BillingService:
         if start is None or end is None:
             start, end = month_bounds()
 
-        total_usage = self.usage_repo.get_total_usage(
-            subscription_id, start, end
-        )
+        total_usage = self.usage_repo.get_total_usage(subscription_id, start, end)
 
         overage = max(total_usage - plan.usage_limit, 0)
         amount_due = plan.price + overage * self.OVERAGE_PRICE

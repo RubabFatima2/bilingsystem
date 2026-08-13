@@ -4,7 +4,6 @@ from app.repositories.plan_repository import PlanRepository
 
 
 class PlanService:
-
     def __init__(self, db):
         self.repository = PlanRepository(db)
 

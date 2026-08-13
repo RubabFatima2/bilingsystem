@@ -63,9 +63,9 @@ class UsageEvent(Base):
     )
 
     idempotency_key: Mapped[str] = mapped_column(
-    String,
-    unique=True,
-    nullable=False,
+        String,
+        unique=True,
+        nullable=False,
     )
 
     created_at: Mapped[datetime] = mapped_column(

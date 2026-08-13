@@ -24,9 +24,7 @@ async def _reconciliation_loop() -> None:
     while True:
         try:
             with SessionLocal() as db:
-                synced = ReconciliationService(
-                    db, get_stripe_client()
-                ).run_once()
+                synced = ReconciliationService(db, get_stripe_client()).run_once()
             if synced:
                 logger.info("Reconciliation synced %s subscription(s)", synced)
         except Exception:  # noqa: BLE001 - the loop must never die
@@ -65,6 +63,4 @@ app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/")
 async def root():
-    return {
-        "message": f"Welcome to {settings.APP_NAME}"
-    }
+    return {"message": f"Welcome to {settings.APP_NAME}"}

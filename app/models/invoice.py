@@ -57,11 +57,11 @@ class Invoice(Base):
     subscription = relationship("Subscription")
 
     period_start: Mapped[datetime | None] = mapped_column(
-    DateTime,
-    nullable=True,
-)
+        DateTime,
+        nullable=True,
+    )
 
     period_end: Mapped[datetime | None] = mapped_column(
-    DateTime,
-    nullable=True,
-)
+        DateTime,
+        nullable=True,
+    )

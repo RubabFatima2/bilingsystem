@@ -35,7 +35,7 @@ class Tenant(Base):
     )
 
     subscriptions = relationship(
-    "Subscription",
-    back_populates="tenant",
-    cascade="all, delete-orphan",
-)
+        "Subscription",
+        back_populates="tenant",
+        cascade="all, delete-orphan",
+    )

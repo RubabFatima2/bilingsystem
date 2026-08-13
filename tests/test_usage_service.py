@@ -5,6 +5,7 @@ a request at / under / over the limit, plus clean 4xx errors instead of a
 500 for a missing or non-active subscription, and the exactly-once retry
 guarantee (Probe 1).
 """
+
 from uuid import uuid4
 
 import pytest
@@ -66,11 +67,7 @@ def make_service(
     subscription=_MISSING,
     status=SubscriptionStatus.ACTIVE,
 ):
-    sub = (
-        FakeSubscription(status=status)
-        if subscription is _MISSING
-        else subscription
-    )
+    sub = FakeSubscription(status=status) if subscription is _MISSING else subscription
     service = UsageService(db=None)
     service.subscription_repo = FakeSubscriptionRepo(sub)
     # A plain int means "API_CALL usage of that amount"; a dict lets tests

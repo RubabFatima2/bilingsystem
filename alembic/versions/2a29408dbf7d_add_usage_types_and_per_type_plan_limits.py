@@ -5,6 +5,7 @@ Revises: 4c4dce7abd0f
 Create Date: 2026-08-11 16:25:08.685784
 
 """
+
 from collections.abc import Sequence
 
 import sqlalchemy as sa
@@ -12,8 +13,8 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = '2a29408dbf7d'
-down_revision: str | Sequence[str] | None = '4c4dce7abd0f'
+revision: str = "2a29408dbf7d"
+down_revision: str | Sequence[str] | None = "4c4dce7abd0f"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 
@@ -64,10 +65,7 @@ def upgrade() -> None:
     # Backfill: existing plans only metered api-call style usage, so their
     # api_call_limit is the historical usage_limit. tokens_limit defaults to
     # 0 for legacy rows; seeded/Pro plans set it explicitly.
-    op.execute(
-        "UPDATE plans "
-        "SET api_call_limit = usage_limit, tokens_limit = 0"
-    )
+    op.execute("UPDATE plans SET api_call_limit = usage_limit, tokens_limit = 0")
 
     op.alter_column("plans", "api_call_limit", nullable=False)
     op.alter_column("plans", "tokens_limit", nullable=False)
@@ -91,8 +89,10 @@ def upgrade() -> None:
         sa.Column("reasoning_tokens", sa.Integer(), nullable=True),
     )
 
-    op.execute("UPDATE usage_events SET cached_input_tokens = 0, "
-               "input_tokens = 0, output_tokens = 0, reasoning_tokens = 0")
+    op.execute(
+        "UPDATE usage_events SET cached_input_tokens = 0, "
+        "input_tokens = 0, output_tokens = 0, reasoning_tokens = 0"
+    )
 
     op.alter_column("usage_events", "cached_input_tokens", nullable=False)
     op.alter_column("usage_events", "input_tokens", nullable=False)

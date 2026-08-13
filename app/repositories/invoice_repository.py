@@ -5,7 +5,6 @@ from app.models.subscription import Subscription
 
 
 class InvoiceRepository:
-
     def __init__(self, db: Session):
         self.db = db
 

@@ -11,7 +11,6 @@ from app.utils.dates import month_bounds
 
 
 class UsageService:
-
     def __init__(self, db):
         self.repository = UsageRepository(db)
         self.subscription_repo = SubscriptionRepository(db)
@@ -21,15 +20,11 @@ class UsageService:
         # Idempotency short-circuit: a retried request with the same
         # idempotency key returns the original event -- no new row, no quota
         # re-check, no double count. This is the exactly-once guarantee.
-        existing = self.repository.get_by_idempotency_key(
-            usage.idempotency_key
-        )
+        existing = self.repository.get_by_idempotency_key(usage.idempotency_key)
         if existing is not None:
             return existing
 
-        subscription = self.subscription_repo.get_by_id(
-            usage.subscription_id
-        )
+        subscription = self.subscription_repo.get_by_id(usage.subscription_id)
 
         if subscription is None:
             raise ResourceNotFoundException(

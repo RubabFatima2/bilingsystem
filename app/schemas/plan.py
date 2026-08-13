@@ -7,6 +7,10 @@ class PlanCreate(BaseModel):
     name: str
     price: int
     usage_limit: int
+    api_call_limit: int = 0
+    tokens_limit: int = 0
+    stripe_price_id: str | None = None
+    stripe_product_id: str | None = None
 
 
 class PlanResponse(BaseModel):
@@ -16,4 +20,8 @@ class PlanResponse(BaseModel):
     name: str
     price: int
     usage_limit: int
+    api_call_limit: int
+    tokens_limit: int
+    stripe_price_id: str | None
+    stripe_product_id: str | None
     is_active: bool

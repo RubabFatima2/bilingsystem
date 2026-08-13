@@ -28,6 +28,4 @@ def calculate_bill(
 ):
     get_owned_subscription(subscription_id, tenant_id, db)
     service = BillingService(db)
-    return service.calculate_bill(
-        subscription_id
-    )
+    return service.calculate_bill(subscription_id)

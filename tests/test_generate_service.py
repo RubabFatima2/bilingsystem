@@ -1,4 +1,5 @@
 """Unit tests for the GenerateService wiring (Probe 1 + cost in response)."""
+
 from types import SimpleNamespace
 from uuid import uuid4
 

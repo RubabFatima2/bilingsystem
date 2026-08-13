@@ -11,16 +11,13 @@ from app.schemas.usage import UsageCreate
 
 
 class UsageRepository:
-
     def __init__(self, db: Session):
         self.db = db
 
     def get_by_idempotency_key(self, idempotency_key: str):
         return (
             self.db.query(UsageEvent)
-            .filter(
-                UsageEvent.idempotency_key == idempotency_key
-            )
+            .filter(UsageEvent.idempotency_key == idempotency_key)
             .first()
         )
 

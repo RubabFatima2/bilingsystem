@@ -3,17 +3,11 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
-
+from app.core.config import settings
 from app.db.base import Base
+
 # from app.db import models
 # Import models after Base has been created.
-from app.models.tenant import Tenant
-from app.models.plan import Plan
-from app.models.subscription import Subscription
-from app.models.usage_event import UsageEvent
-from app.core.config import settings
-from app.models.invoice import Invoice
-from app.models.webhook_event import WebhookEvent
 
 config = context.config
 
@@ -77,9 +71,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

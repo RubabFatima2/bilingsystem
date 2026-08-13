@@ -4,6 +4,7 @@
 access to another tenant's subscription with 403 -- the multi-tenant
 isolation guarantee from the capstone brief.
 """
+
 from uuid import UUID
 
 from fastapi import Header, HTTPException
@@ -19,7 +20,7 @@ def get_current_tenant_id(
 ) -> UUID:
     try:
         return UUID(x_tenant_id)
-    except (ValueError, TypeError):
+    except ValueError, TypeError:
         raise HTTPException(
             status_code=400,
             detail="X-Tenant-Id header must be a valid UUID",
@@ -34,9 +35,7 @@ def get_owned_subscription(
     """Return the subscription, or 404/403 if missing / not owned."""
     subscription = SubscriptionRepository(db).get_by_id(subscription_id)
     if subscription is None:
-        raise ResourceNotFoundException(
-            f"Subscription {subscription_id} not found"
-        )
+        raise ResourceNotFoundException(f"Subscription {subscription_id} not found")
     if subscription.tenant_id != tenant_id:
         raise HTTPException(
             status_code=403,

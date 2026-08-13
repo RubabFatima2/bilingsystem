@@ -20,3 +20,11 @@ dev = [
     "pytest-asyncio>=1.4.0",
     "ruff>=0.16.1",
 ]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 88
+
+[tool.ruff.lint]
+# B008: `Depends()` in argument defaults is idiomatic FastAPI.
+ignore = ["B008"]

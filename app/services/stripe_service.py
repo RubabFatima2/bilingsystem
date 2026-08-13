@@ -11,6 +11,7 @@ Responsibilities:
 The Stripe client is injected so unit tests use a fake; the real client is
 ``app.integrations.stripe.get_stripe_client``.
 """
+
 from uuid import UUID
 
 import stripe
@@ -30,7 +31,6 @@ from app.repositories.webhook_event_repository import WebhookEventRepository
 
 
 class StripeService:
-
     def __init__(
         self,
         db: Session,
@@ -80,9 +80,7 @@ class StripeService:
         if existing is not None and existing.stripe_customer_id:
             session_params["customer"] = existing.stripe_customer_id
 
-        checkout_session = self._stripe.checkout.Session.create(
-            **session_params
-        )
+        checkout_session = self._stripe.checkout.Session.create(**session_params)
 
         return checkout_session.url
 
@@ -114,9 +112,7 @@ class StripeService:
         if self._webhook_repo.get_by_event_id(event_id):
             return
 
-        self._db.add(
-            WebhookEvent(event_id=event_id, event_type=event["type"])
-        )
+        self._db.add(WebhookEvent(event_id=event_id, event_type=event["type"]))
 
         try:
             self._process_event(event)
@@ -162,9 +158,7 @@ class StripeService:
         if not stripe_sub_id:
             return
 
-        subscription = self._sub_repo.get_by_stripe_subscription_id(
-            stripe_sub_id
-        )
+        subscription = self._sub_repo.get_by_stripe_subscription_id(stripe_sub_id)
         if subscription is None:
             return
 
@@ -181,9 +175,7 @@ class StripeService:
         if not stripe_sub_id:
             return
 
-        subscription = self._sub_repo.get_by_stripe_subscription_id(
-            stripe_sub_id
-        )
+        subscription = self._sub_repo.get_by_stripe_subscription_id(stripe_sub_id)
         if subscription is None:
             return
 
@@ -193,5 +185,5 @@ class StripeService:
 def _price_id_from_items(sub_obj) -> str | None:
     try:
         return sub_obj["items"]["data"][0]["price"]["id"]
-    except (KeyError, IndexError, TypeError):
+    except KeyError, IndexError, TypeError:
         return None

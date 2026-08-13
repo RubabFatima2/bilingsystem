@@ -3,6 +3,7 @@
 Injected clients keep the services unit-testable; this is the only place
 that touches the Stripe SDK's global api_key.
 """
+
 import stripe
 from fastapi import HTTPException
 

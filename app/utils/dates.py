@@ -6,6 +6,7 @@ of month, first day of next month).
 
 Timestamps are naive UTC to match the ORM ``datetime.utcnow`` defaults.
 """
+
 from datetime import UTC, datetime, timedelta
 
 

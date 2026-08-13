@@ -9,13 +9,13 @@ POST /generate is the capstone's one dummy billable endpoint. It:
 The cost rules (cached-input cheaper, reasoning-as-output) live in the
 CostService; this service just wires metering + quota + cost together.
 """
+
 from app.schemas.usage import TokenUsageCreate, UsageResponse
 from app.services.cost_service import CostService
 from app.services.usage_service import UsageService
 
 
 class GenerateService:
-
     def __init__(self, db):
         self.usage_service = UsageService(db)
         self.cost_service = CostService(db)

@@ -5,7 +5,4 @@ router = APIRouter(tags=["Health"])
 
 @router.get("/health")
 async def health_check():
-    return {
-        "status": "healthy",
-        "message": "Billing Engine is running"
-    }
+    return {"status": "healthy", "message": "Billing Engine is running"}

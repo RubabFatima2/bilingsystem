@@ -3,9 +3,8 @@
 Probe 5: cached-input and reasoning-token rules must produce the exact
 expected totals, and GET /usage must match.
 """
-from uuid import uuid4
 
-import pytest
+from uuid import uuid4
 
 from app.constants.pricing import CENTS_TO_MICRO
 from app.constants.usage_type import UsageType
@@ -17,6 +16,7 @@ def make_service():
 
 
 # --- calculate_token_cost -------------------------------------------------
+
 
 def test_reasoning_tokens_are_billed_as_output():
     """1000 reasoning tokens == 1000 output tokens at output rate."""
@@ -99,6 +99,7 @@ def test_cached_plus_reasoning_mixed_total():
 
 # --- calculate_api_call_cost ----------------------------------------------
 
+
 def test_api_call_cost_rounds_blocks_up():
     svc = make_service()
     assert svc.calculate_api_call_cost(1000) == svc.RATES["api_call_per_1k"]
@@ -107,6 +108,7 @@ def test_api_call_cost_rounds_blocks_up():
 
 # --- to_cents -------------------------------------------------------------
 
+
 def test_to_cents_converts_micro_units():
     svc = make_service()
     assert svc.to_cents(1000 * CENTS_TO_MICRO) == 1000.0
@@ -114,6 +116,7 @@ def test_to_cents_converts_micro_units():
 
 
 # --- rollup (Probe 5) ------------------------------------------------------
+
 
 class FakePlan:
     id = uuid4()

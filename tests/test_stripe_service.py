@@ -4,6 +4,7 @@ Covers: forged signature -> 400 with nothing written, replay dedupe,
 checkout.session.completed flipping a tenant Free -> Pro, and
 customer.subscription.deleted cancelling the subscription.
 """
+
 from types import SimpleNamespace
 from uuid import uuid4
 
@@ -102,9 +103,7 @@ class FakeStripe:
         self.event = event
         self.raises = raises
         self.created_session = None
-        self.Webhook = SimpleNamespace(
-            construct_event=self._construct_event
-        )
+        self.Webhook = SimpleNamespace(construct_event=self._construct_event)
         self.checkout = SimpleNamespace(
             Session=SimpleNamespace(create=self._create_session)
         )

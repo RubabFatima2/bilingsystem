@@ -8,6 +8,7 @@ status/plan from Stripe -- catching webhooks that were missed or dropped.
 The job is safe to run twice (idempotent), retries transient Stripe errors
 with exponential backoff, and logs every failure as the alert channel.
 """
+
 import logging
 import time
 
@@ -20,7 +21,6 @@ logger = logging.getLogger("billing_engine")
 
 
 class ReconciliationService:
-
     def __init__(
         self,
         db: Session,
@@ -53,9 +53,7 @@ class ReconciliationService:
                         s.stripe_subscription_id
                     )
                 )
-                status = from_stripe_status(
-                    getattr(stripe_sub, "status", None)
-                )
+                status = from_stripe_status(getattr(stripe_sub, "status", None))
                 if subscription.status != status:
                     subscription.status = status
                     synced += 1

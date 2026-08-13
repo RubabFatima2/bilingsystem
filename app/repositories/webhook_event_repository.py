@@ -4,7 +4,6 @@ from app.models.webhook_event import WebhookEvent
 
 
 class WebhookEventRepository:
-
     def __init__(self, db: Session):
         self.db = db
 
